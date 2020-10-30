@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import Router from "./Router";
-import Header from "./Header";
+import GlobalStyles from "./GlobalStyles";
+import GoogleFontLoader from "react-google-font-loader";
 
 class App extends Component {
   render() {
     return <>
-      <Header />
       <Router />
+      <GlobalStyles />
+      <GoogleFontLoader
+        fonts={[
+          {
+            font: "PT Sans",
+            weights: [400, 700]
+          }
+        ]}
+      />
     </>;
   }
 }
