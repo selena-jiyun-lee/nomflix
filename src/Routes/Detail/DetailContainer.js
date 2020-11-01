@@ -31,7 +31,6 @@ export default class extends React.Component {
 
 		let result = null;
 		try {
-			console.log(isMovie);
 			if (isMovie) {
 				({ data: result } = await movieApi.movieDetail(numberId));
 			} else {
