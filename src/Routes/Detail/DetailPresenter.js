@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "Components/Loader";
+import Tab from "Components/Tab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImdb } from "@fortawesome/free-brands-svg-icons";
 
 const Container = styled.div`
 	height: calc(100vh - 70px);
@@ -61,11 +64,13 @@ const Divider = styled.span`
 `;
 
 const Overview = styled.p`
-	margin-top: 20px;
+	margin: 20px 0;
 	font-size: 18px;
 	line-height: 1.3;
 	opacity: 0.8;
 `;
+
+const ImdbLink = styled.a``;
 
 const DetailPresenter = ({ result, error, loading }) =>
 	loading ? (
@@ -104,13 +109,35 @@ const DetailPresenter = ({ result, error, loading }) =>
 						)}
 					</Text>
 					<Overview>{result.overview}</Overview>
+					<ImdbLink
+						href={`https://www.imdb.com/title/${result.imdb_id}`}>
+						<FontAwesomeIcon icon={faImdb} size="3x" />
+					</ImdbLink>
+					<Tab
+						productionCountries={result.production_countries}
+						productionCompanies={result.production_companies}
+						videos={result.videos}
+						seasons={{ seasons: result.seasons }}
+					/>
 				</Information>
 			</Content>
 		</Container>
 	);
 
 DetailPresenter.propTypes = {
-	result: PropTypes.object,
+	result: PropTypes.shape({
+		backdrop_path: PropTypes.string,
+		poster_path: PropTypes.string,
+		original_title: PropTypes.string,
+		original_name: PropTypes.string,
+		release_date: PropTypes.string,
+		first_air_date: PropTypes.string,
+		runtime: PropTypes.number,
+		episode_run_time: PropTypes.arrayOf(PropTypes.number),
+		genre: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+		overview: PropTypes.string,
+		imdb_id: PropTypes.string
+	}),
 	error: PropTypes.string,
 	loading: PropTypes.bool.isRequired
 };
