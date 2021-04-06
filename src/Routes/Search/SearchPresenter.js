@@ -9,17 +9,22 @@ import Message from "Components/Message";
 import Poster from "Components/Poster";
 
 const Container = styled.div`
-	padding: 30px;
+	padding: 70px 30px;
 `;
 const Form = styled.form`
 	width: 100%;
 `;
+
 const Input = styled.input`
 	all: unset;
 	font-size: 20px;
 	width: 100%;
 	margin-bottom: 50px;
 	border-bottom: 2px solid rgba(256, 256, 256, 0.2);
+`;
+
+const SearchSection = styled(Section)`
+	top: 100px;
 `;
 
 const SearchPresenter = ({
@@ -46,7 +51,7 @@ const SearchPresenter = ({
 		) : (
 			<>
 				{movieResults && movieResults.length > 0 && (
-					<Section title="Movie Results">
+					<SearchSection title="Movie Results" mode="search">
 						{movieResults.map((movie) => (
 							<Poster
 								key={movie.id}
@@ -59,12 +64,13 @@ const SearchPresenter = ({
 									movie.release_date.substring(0, 4)
 								}
 								isMovie={true}
+								mode="grid"
 							/>
 						))}
-					</Section>
+					</SearchSection>
 				)}
 				{tvResults && tvResults.length > 0 && (
-					<Section title="TV Show Results">
+					<SearchSection title="TV Show Results" mode="search">
 						{tvResults.map((show) => (
 							<Poster
 								key={show.id}
@@ -76,9 +82,10 @@ const SearchPresenter = ({
 									show.first_air_date &&
 									show.first_air_date.substring(0, 4)
 								}
+								mode="grid"
 							/>
 						))}
-					</Section>
+					</SearchSection>
 				)}
 
 				{error && <Message color="#e63e33" text={error} />}

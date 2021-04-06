@@ -3,60 +3,81 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: none;
+  scroll-snap-align: center;
+  border-radius: 5px;
+  margin: 0 3px;
+  transition: all 0.3s;
+  z-index: 2;
+  box-sizing: border-box;
+`;
+
 const Image = styled.div`
-	width: 150px;
-	height: 200px;
+	width: ${props => props.mode === 'slider' ? '15vw' : '10vw'};
+  height: ${props => props.mode === 'slider' ? '22.5vw' : '15vw'};
 	background-size: cover;
-	background-position: center center;
 	background-image: url(${(props) => props.imgUrl});
 	margin: 5px 0;
-	transition: opacity 0.1s linear;
+	border-radius: 5px;
+	transition: all 0.2s;
+	transition-delay: 0.3s;
 `;
+
 const Rating = styled.span`
 	position: absolute;
-	bottom: 5px;
+	bottom: 0.3vw;
 	right: 5px;
 	opacity: 0;
-	transition: opacity 0.1s linear;
+	transition: all 0.2s;
+	transition-delay: 0.3s;
+`;
+
+
+const Title = styled.span`
+	display: block;
+	position: absolute;
+	top: 1.2vw;
+	left: 5px;
+	font-weight: 500;
+	font-size: 1vw;
+	margin-bottom: 5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	opacity: 0;
+	transition: all 0.2s;
+	transition-delay: 0.3s;
 `;
 const ImageContainer = styled.div`
 	margin-bottom: 5px;
 	position: relative;
 	&:hover {
 		${Image} {
-			opacity: 0.3;
+			width: ${props => props.mode === 'slider' ? '18vw' : '11vw'};
+			height: ${props => props.mode === 'slider' ? '27vw' : '16vw'};
+			z-index: 99;
+			filter: brightness(50%);
 		}
+		
 		${Rating} {
+			opacity: 1;
+		}
+		${Title} {
 			opacity: 1;
 		}
 	}
 `;
-const Title = styled.span`
-	display: block;
-	font-weight: 500;
-	font-size: 16px;
-	margin-bottom: 5px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-`;
-const Year = styled.span`
-	display: block;
-	color: darkgray;
-`;
-
-const Poster = ({ id, imgUrl, title, rating, year, isMovie = false }) => (
+const Poster = ({ mode, id, imgUrl, title, rating, year, isMovie = false }) => (
 	<Container>
 		<Link to={isMovie ? `/movie/${id}` : `/tv/${id}`}>
-			<ImageContainer>
-				<Image imgUrl={`https://image.tmdb.org/t/p/w300${imgUrl}`} />
+			<ImageContainer mode={mode}>
+				<Image imgUrl={`https://image.tmdb.org/t/p/w500${imgUrl}`} mode={mode} />
 				<Rating role="img" aria-label="Rating">
 					⭐️ {rating} /10
 				</Rating>
+				<Title>{title} / {year} </Title>
 			</ImageContainer>
-			<Title>{title}</Title>
-			<Year>{year}</Year>
 		</Link>
 	</Container>
 );

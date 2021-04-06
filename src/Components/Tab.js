@@ -16,8 +16,8 @@ const SelectedContainer = styled.div`
 `;
 
 const TabButton = styled.button`
-	background-color: rgba(0, 0, 0, 0.8);
-	color: white;
+	background-color: ${props => props.current ? 'rgba(256, 256, 256, 0.8)' : 'rgba(0, 0, 0, 0.8)'};
+	color: ${props => props.current ? 'black' : 'white'};
 	border: solid 1px white;
 	border-bottom: none;
 	padding: 10px;
@@ -80,7 +80,7 @@ const Tab = ({ productionCountries, productionCompanies, videos, seasons }) => {
 	const tabs = useTabs(0, content);
 	return (
 		<Container>
-			<TabButton onClick={() => tabs.changeItem(0)}>
+			<TabButton onClick={() => tabs.changeItem(0)} current={ tabs === 0 }>
 				Production Information
 			</TabButton>
 			<TabButton onClick={() => tabs.changeItem(1)}>Videos</TabButton>

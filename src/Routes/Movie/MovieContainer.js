@@ -1,15 +1,15 @@
+/* eslint-disable import/no-anonymous-default-export */
 import React from "react";
-import { tvApi } from "api";
-import TVPresenter from "Routes/TV/TVPresenter";
+import { movieApi } from "api";
+import MoviePresenter from "Routes/Movie/MoviePresenter";
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component {
 	state = {
-		topRated: null,
+		nowPlaying: null,
+		upcoming: null,
 		popular: null,
-		airingToday: null,
-		viewMode: 'slider',
 		mainVideo: null,
+		viewMode: 'slider',
 		error: null,
 		loading: true
 	};
@@ -28,24 +28,24 @@ export default class extends React.Component {
 	async componentDidMount() {
 		try {
 			const {
-				data: { results: topRated }
-			} = await tvApi.topRated();
+				data: { results: nowPlaying }
+			} = await movieApi.nowPlaying();
+			const {
+				data: { results: upcoming }
+			} = await movieApi.upcoming();
 			const {
 				data: { results: popular }
-			} = await tvApi.popular();
-			const {
-				data: { results: airingToday }
-			} = await tvApi.airingToday();
+			} = await movieApi.popular();
 			const randomNum = Math.floor(Math.random() * 20);
 			this.setState({
-				topRated,
+				nowPlaying,
+				upcoming,
 				popular,
-				airingToday,
-				mainVideo: topRated[randomNum]
+				mainVideo: nowPlaying[randomNum]
 			});
 		} catch {
 			this.setState({
-				error: "Can't find TV shows."
+				error: "Can't find movies information"
 			});
 		} finally {
 			this.setState({
@@ -53,14 +53,14 @@ export default class extends React.Component {
 			});
 		}
 	}
-
 	render() {
-		const { topRated, popular, airingToday, viewMode, mainVideo, error, loading } = this.state;
+		const { nowPlaying, upcoming, popular, viewMode, mainVideo, error, loading } = this.state;
+
 		return (
-			<TVPresenter
-				topRated={topRated}
+			<MoviePresenter
+				nowPlaying={nowPlaying}
+				upcoming={upcoming}
 				popular={popular}
-				airingToday={airingToday}
 				mainVideo={mainVideo}
 				viewMode={viewMode}
 				error={error}

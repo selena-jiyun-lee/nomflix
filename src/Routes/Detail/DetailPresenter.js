@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImdb } from "@fortawesome/free-brands-svg-icons";
 
 const Container = styled.div`
-	height: calc(100vh - 70px);
+	height: 100vh;
 	width: 100vw;
 	position: relative;
 	padding: 50px;

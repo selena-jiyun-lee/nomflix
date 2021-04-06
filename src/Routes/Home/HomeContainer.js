@@ -1,53 +1,40 @@
-/* eslint-disable import/no-anonymous-default-export */
-import React from "react";
-import { movieApi } from "api";
-import HomePresenter from "Routes/Home/HomePresenter";
+import React from 'react';
+import HomePresenter from 'Routes/Home/HomePresenter';
+import { trendApi } from 'api';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component {
-	state = {
-		nowPlaying: null,
-		upcoming: null,
-		popular: null,
-		error: null,
-		loading: true
-	};
-	async componentDidMount() {
-		try {
-			const {
-				data: { results: nowPlaying }
-			} = await movieApi.nowPlaying();
-			const {
-				data: { results: upcoming }
-			} = await movieApi.upcoming();
-			const {
-				data: { results: popular }
-			} = await movieApi.popular();
-			this.setState({
-				nowPlaying,
-				upcoming,
-				popular
-			});
-		} catch {
-			this.setState({
-				error: "Can't find movies information"
-			});
-		} finally {
-			this.setState({
-				loading: false
-			});
-		}
-	}
-	render() {
-		const { nowPlaying, upcoming, popular, error, loading } = this.state;
+  state = {
+    trendsToday: null,
+    trendsWeek: null,
+    trendsTv: null,
+    trendsMovie: null,
+    mainVideo: null,
+    loading: true,
+    error: null
+  }
 
-		return (
-			<HomePresenter
-				nowPlaying={nowPlaying}
-				upcoming={upcoming}
-				popular={popular}
-				error={error}
-				loading={loading}
-			/>
-		);
-	}
+  async componentDidMount() {
+    try {
+      const { data: {results: trendsToday} } = await trendApi.todayAll();
+      const randomNum = Math.floor(Math.random() * 20);
+      const { data: { results: trendsTv } } = await trendApi.weekTv();
+      const { data: { results: trendsMovie } } = await trendApi.weekMovie();
+      this.setState({
+        trendsToday,
+        trendsTv,
+        trendsMovie,
+        mainVideo: trendsToday[randomNum]
+      });
+      console.log(this.state);
+    } catch {
+
+    } finally {
+      this.setState({loading: false})
+    }
+  }
+  render() {
+    const { trendsToday, trendsTv, trendsMovie, mainVideo, loading } = this.state;
+    return <HomePresenter trendsToday={trendsToday} trendsTv={trendsTv} trendsMovie={trendsMovie} mainVideo={mainVideo} loading={loading}/>
+  }
 }
